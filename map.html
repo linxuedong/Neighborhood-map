@@ -23,16 +23,28 @@
 		var point = new BMap.Point(116.404, 39.915);
 		map.centerAndZoom(point, 15);
 		// 编写自定义函数,创建标注
-		function addMarker(point){
+		function addMarker(point, title, info){
 		  var marker = new BMap.Marker(point);
 		  map.addOverlay(marker);
-		}
-		// 随机向地图添加25个标注
-		var point = new BMap.Point(116.404, 39.915);
-		addMarker(point);
-		var point2 = new BMap.Point(116.403, 39.914);
-		addMarker(point2);
+		  console.log(point);
+		  console.log(point.lng);
+		  console.log(point.lat);
 
+		  var opts = {
+	  		  width : 200,     // 信息窗口宽度
+	  		  height: 100,     // 信息窗口高度
+	  		  title : title , // 信息窗口标题
+	  		}
+	  		var infoWindow = new BMap.InfoWindow(info, opts);  // 创建信息窗口对象
+	  		marker.addEventListener("click", function(){
+	  			map.openInfoWindow(infoWindow,point); //开启信息窗口
+	  		});
+		}
+		// 随机向地图添加2个标注
+		var point = new BMap.Point(116.404, 39.915);
+		addMarker(point, 'hello', 'happy');
+		var point2 = new BMap.Point(116.403, 39.914);
+		addMarker(point2, 'world', 'sad');
 
 	</script>
 
