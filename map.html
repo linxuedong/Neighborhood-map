@@ -12,7 +12,7 @@
 	    body{height:100%;margin:0px;padding:0px}
 	    #container{height:100vh}
 	</style>
-	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oMuo2PiPD4ui8KX73Xu49umMSTpcAZOe"></script>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=oMuo2PiPD4ui8KX73Xu49umMSTpcAZOe"></script>
 	<script type='text/javascript' src='static/knockout-3.4.2.js'></script>
 
 </head>
@@ -32,56 +32,59 @@
 
 
 	<script type="text/javascript">
+		function mymap(arr) {
+			// 百度地图 API 功能
+			console.log(arr);
+			var map = new BMap.Map("container");
+			var point = new BMap.Point(arr[0].lng, arr[0].lat);
+			map.centerAndZoom(point, 15);
+			// 编写自定义函数, 创建标注
+			function addMarker(point, title){
+			  var marker = new BMap.Marker(point);
+			  map.addOverlay(marker);
 
-		// knockout
+			  var opts = {
+				  width : 200,     // 信息窗口宽度
+				  height: 100,     // 信息窗口高度
+				  title : title , // 信息窗口标题
+				}
+				var infoWindow = new BMap.InfoWindow(title, opts);  // 创建信息窗口对象
+				marker.addEventListener("click", function(){
+					map.openInfoWindow(infoWindow,point); //开启信息窗口
+				});
+			}
+			for (var i = 0; i < arr.length; i++) {
+				console.log('for: ' + i + ' ' + arr[i].lng + ' ' + arr[i].lat);
+				var point = new BMap.Point(arr[i].lng, arr[i].lat);
+				addMarker(point, arr[i].place);
+			}
+		}
+
+	    // knockout
 		function AppViewModel() {
-			var self = this;
+	        var self = this;
 			arr = [
-				{ place: '故宫博物馆', lng: '116.403677', lat: '39.923716'},
-				{ place: '景山公园', lng: '116.403245', lat: '39.93113' },
-				{ place: '坤宁宫', lng: '116.403533', lat: '39.927146' },
+	            { place: '故宫博物馆', lng: '116.403677', lat: '39.923716'},
+	            { place: '景山公园', lng: '116.403245', lat: '39.93113' },
+	            { place: '坤宁宫', lng: '116.403533', lat: '39.927146' },
 				{ place: '北海公园', lng: '116.3957', lat: '39.933343' },
 				{ place: '天安门', lng: '116.404108', lat: '39.915138' },
 				{ place: '人民大会堂', lng: '116.400155', lat: '39.911541' },
 				{ place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
-			]
-			self.location = ko.observableArray(arr);
+	        ]
+	        self.location = ko.observableArray(arr);
 
-			self.showLocation = function() {
-				console.log(this.lng + ':'+ this.lat);
-			}
+	        self.showLocation = function() {
+	            console.log(this.lng + ':'+ this.lat);
+	        }
 
-		}
+			mymap(arr)
+	    }
 
 		ko.applyBindings(new AppViewModel());
 
-		// 百度地图API功能
-		var map = new BMap.Map("container");
-		var point = new BMap.Point(116.404, 39.915);
-		map.centerAndZoom(point, 15);
-		// 编写自定义函数,创建标注
-		function addMarker(point, title, info){
-		  var marker = new BMap.Marker(point);
-		  map.addOverlay(marker);
-		  console.log(point);
-		  console.log(point.lng);
-		  console.log(point.lat);
 
-		  var opts = {
-	  		  width : 200,     // 信息窗口宽度
-	  		  height: 100,     // 信息窗口高度
-	  		  title : title , // 信息窗口标题
-	  		}
-	  		var infoWindow = new BMap.InfoWindow(info, opts);  // 创建信息窗口对象
-	  		marker.addEventListener("click", function(){
-	  			map.openInfoWindow(infoWindow,point); //开启信息窗口
-	  		});
-		}
-		// 随机向地图添加2个标注
-		var point = new BMap.Point(116.404, 39.915);
-		addMarker(point, 'hello', 'happy');
-		var point2 = new BMap.Point(116.403, 39.914);
-		addMarker(point2, 'world', 'sad');
+
 
 	</script>
 
