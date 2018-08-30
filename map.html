@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>Document</title>
+	<style type="text/css">
+	    html{height:100%}
+	    body{height:100%;margin:0px;padding:0px}
+	    #container{height:100%}
+	</style>
+	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oMuo2PiPD4ui8KX73Xu49umMSTpcAZOe"></script>
+
+</head>
+<body>
+	<div id="container"></div>
+
+
+	<script type="text/javascript">
+		// 百度地图API功能
+		var map = new BMap.Map("container");
+		var point = new BMap.Point(116.404, 39.915);
+		map.centerAndZoom(point, 15);
+		// 编写自定义函数,创建标注
+		function addMarker(point){
+		  var marker = new BMap.Marker(point);
+		  map.addOverlay(marker);
+		}
+		// 随机向地图添加25个标注
+		var point = new BMap.Point(116.404, 39.915);
+		addMarker(point);
+		var point2 = new BMap.Point(116.403, 39.914);
+		addMarker(point2);
+
+
+	</script>
+
+
+</body>
+</html>
