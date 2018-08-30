@@ -34,36 +34,51 @@
 	<script type="text/javascript">
 		function mymap(arr) {
 			// 百度地图 API 功能
-			console.log(arr);
+			// 展示地图
 			var map = new BMap.Map("container");
 			var point = new BMap.Point(arr[0].lng, arr[0].lat);
 			map.centerAndZoom(point, 15);
-			// 编写自定义函数, 创建标注
-			function addMarker(point, title){
-			  var marker = new BMap.Marker(point);
-			  map.addOverlay(marker);
 
-			  var opts = {
-				  width : 200,     // 信息窗口宽度
-				  height: 100,     // 信息窗口高度
-				  title : title , // 信息窗口标题
-				}
-				var infoWindow = new BMap.InfoWindow(title, opts);  // 创建信息窗口对象
-				marker.addEventListener("click", function(){
-					map.openInfoWindow(infoWindow,point); //开启信息窗口
-				});
+			// 信息窗口属性
+			var opts = {
+				width : 100,     // 信息窗口宽度
+				height: 50,     // 信息窗口高度
 			}
+
+			// 创建点
+			function addMarker(point){
+  			    var marker = new BMap.Marker(point);
+			    map.addOverlay(marker);
+			}
+
+			// 展示信息窗口
+			function openInfo(content, e) {
+				var p = e.target;
+				var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
+				var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+				map.openInfoWindow(infoWindow,point); //开启信息窗口
+			}
+
+			function addClickHandler(content,marker){
+				marker.addEventListener("click",function(e){
+					openInfo(content,e)}
+				);
+			}
+
 			for (var i = 0; i < arr.length; i++) {
-				console.log('for: ' + i + ' ' + arr[i].lng + ' ' + arr[i].lat);
 				var point = new BMap.Point(arr[i].lng, arr[i].lat);
 				addMarker(point, arr[i].place);
+				var marker = new BMap.Marker(point);
+				map.addOverlay(marker);
+				var content = arr[i].place;
+				addClickHandler(content,marker);
 			}
 		}
 
 	    // knockout
 		function AppViewModel() {
 	        var self = this;
-			arr = [
+			var data_info = [
 	            { place: '故宫博物馆', lng: '116.403677', lat: '39.923716'},
 	            { place: '景山公园', lng: '116.403245', lat: '39.93113' },
 	            { place: '坤宁宫', lng: '116.403533', lat: '39.927146' },
@@ -72,17 +87,16 @@
 				{ place: '人民大会堂', lng: '116.400155', lat: '39.911541' },
 				{ place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
 	        ]
-	        self.location = ko.observableArray(arr);
+	        self.location = ko.observableArray(data_info);
 
 	        self.showLocation = function() {
 	            console.log(this.lng + ':'+ this.lat);
 	        }
 
-			mymap(arr)
+			mymap(data_info)
 	    }
 
 		ko.applyBindings(new AppViewModel());
-
 
 
 
