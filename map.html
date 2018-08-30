@@ -4,20 +4,57 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
 	<meta http-equiv="X-UA-Compatible" content="ie=edge">
-	<title>Document</title>
+	<title>Neighborhood Map</title>
+	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+
 	<style type="text/css">
 	    html{height:100%}
 	    body{height:100%;margin:0px;padding:0px}
-	    #container{height:100%}
+	    #container{height:100vh}
 	</style>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=2.0&ak=oMuo2PiPD4ui8KX73Xu49umMSTpcAZOe"></script>
+	<script type='text/javascript' src='static/knockout-3.4.2.js'></script>
 
 </head>
 <body>
-	<div id="container"></div>
+
+	<div class="row">
+			<ul data-bind="foreach: location" class="list-group col-2">
+	            <li data-bind="click: $parent.showLocation" class="list-group-item">
+	                <span data-bind="text: place"></span>
+	            </li>
+	        </ul>
+		<div class="col-10" id="container" >
+			<div></div>
+
+		</div>
+	</div>
 
 
 	<script type="text/javascript">
+
+		// knockout
+		function AppViewModel() {
+			var self = this;
+			arr = [
+				{ place: '故宫博物馆', lng: '116.403677', lat: '39.923716'},
+				{ place: '景山公园', lng: '116.403245', lat: '39.93113' },
+				{ place: '坤宁宫', lng: '116.403533', lat: '39.927146' },
+				{ place: '北海公园', lng: '116.3957', lat: '39.933343' },
+				{ place: '天安门', lng: '116.404108', lat: '39.915138' },
+				{ place: '人民大会堂', lng: '116.400155', lat: '39.911541' },
+				{ place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
+			]
+			self.location = ko.observableArray(arr);
+
+			self.showLocation = function() {
+				console.log(this.lng + ':'+ this.lat);
+			}
+
+		}
+
+		ko.applyBindings(new AppViewModel());
+
 		// 百度地图API功能
 		var map = new BMap.Map("container");
 		var point = new BMap.Point(116.404, 39.915);
