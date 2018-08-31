@@ -41,6 +41,11 @@
             // { place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
         ]
 
+        // 信息窗口属性
+        var opts = {
+            width : 100,     // 信息窗口宽度
+            height: 50,     // 信息窗口高度
+        }
 	    // knockout
 		function AppViewModel() {
 	        var self = this;
@@ -57,11 +62,6 @@
 			var point = new BMap.Point(initialLocations[0].lng, initialLocations[0].lat);
 			map.centerAndZoom(point, 15);
 
-			// 信息窗口属性
-			var opts = {
-				width : 100,     // 信息窗口宽度
-				height: 50,     // 信息窗口高度
-			}
 
 			// 创建点
 			function addMarker(point){
