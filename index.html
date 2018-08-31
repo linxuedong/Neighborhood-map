@@ -10,26 +10,28 @@
 	<style type="text/css">
 	    html{height:100%}
 	    body{height:100%;margin:0px;padding:0px}
-	    #container{height:100vh}
+	    #container{width: 100%;height:100vh}
 	</style>
 	<script type="text/javascript" src="http://api.map.baidu.com/api?v=3.0&ak=oMuo2PiPD4ui8KX73Xu49umMSTpcAZOe"></script>
 	<script type='text/javascript' src='static/knockout-3.4.2.js'></script>
 
 </head>
 <body>
-
-	<div class="row">
-        <div class="col-2">
-            <input data-bind="textInput: search">
+<div class="container" style="min-width: 100% !important">
+	<div class="row ">
+        <div class="col-lg-2 col-sm-12 mt-2">
+            <div class="form-group">
+                <input class="form-control" data-bind="textInput: search">
+            </div>
             <ul data-bind="foreach: filteredList" class="list-group">
 	            <li data-bind="click: $parent.showLocation" class="list-group-item">
 	                <span data-bind="text: place"></span>
 	            </li>
 	        </ul>
         </div>
-		<div class="col-10" id="container"> </div>
+		<div class="col-lg-10 col-sm-12" id="container"> </div>
 	</div>
-
+</div>
 
 	<script type="text/javascript">
         var initialLocations = [
