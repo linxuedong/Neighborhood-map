@@ -31,20 +31,20 @@
 
 
 	<script type="text/javascript">
+        var initialLocations = [
+            { place: '故宫博物馆', lng: '116.403677', lat: '39.923716'},
+            { place: '景山公园', lng: '116.403245', lat: '39.93113' },
+            { place: '坤宁宫', lng: '116.403533', lat: '39.927146' },
+            { place: '北海公园', lng: '116.3957', lat: '39.933343' },
+            { place: '天安门', lng: '116.404108', lat: '39.915138' },
+            { place: '人民大会堂', lng: '116.400155', lat: '39.911541' },
+            // { place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
+        ]
 
 	    // knockout
 		function AppViewModel() {
 	        var self = this;
-			var data_info = [
-	            { place: '故宫博物馆', lng: '116.403677', lat: '39.923716'},
-	            { place: '景山公园', lng: '116.403245', lat: '39.93113' },
-	            { place: '坤宁宫', lng: '116.403533', lat: '39.927146' },
-				{ place: '北海公园', lng: '116.3957', lat: '39.933343' },
-				{ place: '天安门', lng: '116.404108', lat: '39.915138' },
-				{ place: '人民大会堂', lng: '116.400155', lat: '39.911541' },
-				// { place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
-	        ]
-	        self.location = ko.observableArray(data_info);
+	        self.location = ko.observableArray(initialLocations);
 
 	        self.showLocation = function() {
                 openInfo(this.place, this.lng, this.lat);
@@ -54,7 +54,7 @@
 			// 百度地图 API 功能
 			// 展示地图
 			var map = new BMap.Map("container");
-			var point = new BMap.Point(data_info[0].lng, data_info[0].lat);
+			var point = new BMap.Point(initialLocations[0].lng, initialLocations[0].lat);
 			map.centerAndZoom(point, 15);
 
 			// 信息窗口属性
@@ -77,12 +77,12 @@
 				map.openInfoWindow(infoWindow,point); //开启信息窗口
 			}
 
-			for (var i = 0; i < data_info.length; i++) {
-				var point = new BMap.Point(data_info[i].lng, data_info[i].lat);
-				addMarker(point, data_info[i].place);
+			for (var i = 0; i < initialLocations.length; i++) {
+				var point = new BMap.Point(initialLocations[i].lng, initialLocations[i].lat);
+				addMarker(point, initialLocations[i].place);
 				var marker = new BMap.Marker(point);
 				map.addOverlay(marker);
-				var content = data_info[i].place;
+				var content = initialLocations[i].place;
 			}
 
 	    }
