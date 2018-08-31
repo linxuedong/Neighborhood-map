@@ -27,7 +27,7 @@
 	            </li>
 	        </ul>
         </div>
-		<div class="col-10" id="container" > </div>
+		<div class="col-10" id="container"> </div>
 	</div>
 
 
@@ -47,6 +47,31 @@
             width : 100,     // 信息窗口宽度
             height: 50,     // 信息窗口高度
         }
+
+        // 百度地图 API 功能
+        // 展示地图
+        var map = new BMap.Map("container");
+        var point = new BMap.Point(initialLocations[0].lng, initialLocations[0].lat);
+        map.centerAndZoom(point, 15);
+
+		// 创建点
+        function makePoint(data) {
+            var point = new BMap.Point(data.lng, data.lat);
+            var marker = new BMap.Marker(point);
+            map.addOverlay(marker);
+            var content = data.place;
+        }
+
+        // 展示信息窗口
+        function openInfo(content, lng, lat, e) {
+            // var p = e.target;
+            var point = new BMap.Point(lng, lat);
+            var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+            map.openInfoWindow(infoWindow,point); //开启信息窗口
+        }
+
+
+
 	    // knockout
 		function AppViewModel() {
 	        var self = this;
@@ -56,7 +81,6 @@
             // filter
             self.filteredList = ko.computed( function () {
                 var filter = self.search().toLowerCase();
-                console.log(filter);
                 if (!filter) {
                     self.location().forEach(function (item) {
                         item.visible = ko.observable(true);
@@ -65,10 +89,6 @@
                 } else {
                     return ko.utils.arrayFilter(self.location(), function(item) {
                         var name = item.place.toLowerCase();
-                        console.log(name);
-                        console.log(filter);
-                        console.log(name.search(filter));
-                        console.log(name.search(filter) >= 0);
                         var result = (name.search(filter) >= 0);
                         item.visible = ko.observable(result);
                         return result
@@ -80,34 +100,8 @@
                 openInfo(this.place, this.lng, this.lat);
 	        }
 
-
-			// 百度地图 API 功能
-			// 展示地图
-			var map = new BMap.Map("container");
-			var point = new BMap.Point(initialLocations[0].lng, initialLocations[0].lat);
-			map.centerAndZoom(point, 15);
-
-
-			// 创建点
-			function addMarker(point){
-				var marker = new BMap.Marker(point);
-				map.addOverlay(marker);
-			}
-
-			// 展示信息窗口
-			function openInfo(content, lng, lat, e) {
-				// var p = e.target;
-				var point = new BMap.Point(lng, lat);
-				var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
-				map.openInfoWindow(infoWindow,point); //开启信息窗口
-			}
-
 			for (var i = 0; i < initialLocations.length; i++) {
-				var point = new BMap.Point(initialLocations[i].lng, initialLocations[i].lat);
-				addMarker(point, initialLocations[i].place);
-				var marker = new BMap.Marker(point);
-				map.addOverlay(marker);
-				var content = initialLocations[i].place;
+                makePoint(initialLocations[i])
 			}
 
 	    }
