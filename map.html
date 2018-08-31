@@ -32,48 +32,6 @@
 
 
 	<script type="text/javascript">
-		function mymap(arr) {
-			// 百度地图 API 功能
-			// 展示地图
-			var map = new BMap.Map("container");
-			var point = new BMap.Point(arr[0].lng, arr[0].lat);
-			map.centerAndZoom(point, 15);
-
-			// 信息窗口属性
-			var opts = {
-				width : 100,     // 信息窗口宽度
-				height: 50,     // 信息窗口高度
-			}
-
-			// 创建点
-			function addMarker(point){
-  			    var marker = new BMap.Marker(point);
-			    map.addOverlay(marker);
-			}
-
-			// 展示信息窗口
-			function openInfo(content, e) {
-				var p = e.target;
-				var point = new BMap.Point(p.getPosition().lng, p.getPosition().lat);
-				var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
-				map.openInfoWindow(infoWindow,point); //开启信息窗口
-			}
-
-			function addClickHandler(content,marker){
-				marker.addEventListener("click",function(e){
-					openInfo(content,e)}
-				);
-			}
-
-			for (var i = 0; i < arr.length; i++) {
-				var point = new BMap.Point(arr[i].lng, arr[i].lat);
-				addMarker(point, arr[i].place);
-				var marker = new BMap.Marker(point);
-				map.addOverlay(marker);
-				var content = arr[i].place;
-				addClickHandler(content,marker);
-			}
-		}
 
 	    // knockout
 		function AppViewModel() {
@@ -85,20 +43,54 @@
 				{ place: '北海公园', lng: '116.3957', lat: '39.933343' },
 				{ place: '天安门', lng: '116.404108', lat: '39.915138' },
 				{ place: '人民大会堂', lng: '116.400155', lat: '39.911541' },
-				{ place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
+				// { place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
 	        ]
 	        self.location = ko.observableArray(data_info);
 
 	        self.showLocation = function() {
-	            console.log(this.lng + ':'+ this.lat);
+                openInfo(this.place, this.lng, this.lat);
 	        }
 
-			mymap(data_info)
+
+			// 百度地图 API 功能
+			// 展示地图
+			var map = new BMap.Map("container");
+			var point = new BMap.Point(data_info[0].lng, data_info[0].lat);
+			map.centerAndZoom(point, 15);
+
+			// 信息窗口属性
+			var opts = {
+				width : 100,     // 信息窗口宽度
+				height: 50,     // 信息窗口高度
+			}
+
+			// 创建点
+			function addMarker(point){
+				var marker = new BMap.Marker(point);
+				map.addOverlay(marker);
+			}
+
+			// 展示信息窗口
+			function openInfo(content, lng, lat, e) {
+				// var p = e.target;
+				var point = new BMap.Point(lng, lat);
+				var infoWindow = new BMap.InfoWindow(content, opts);  // 创建信息窗口对象
+				map.openInfoWindow(infoWindow,point); //开启信息窗口
+			}
+
+
+
+			for (var i = 0; i < data_info.length; i++) {
+				var point = new BMap.Point(data_info[i].lng, data_info[i].lat);
+				addMarker(point, data_info[i].place);
+				var marker = new BMap.Marker(point);
+				map.addOverlay(marker);
+				var content = data_info[i].place;
+			}
+
 	    }
 
 		ko.applyBindings(new AppViewModel());
-
-
 
 	</script>
 
