@@ -33,13 +33,13 @@
 
 	<script type="text/javascript">
         var initialLocations = [
-            { place: '故宫博物馆', lng: '116.403677', lat: '39.923716'},
-            { place: '景山公园', lng: '116.403245', lat: '39.93113' },
-            { place: '坤宁宫', lng: '116.403533', lat: '39.927146' },
-            { place: '北海公园', lng: '116.3957', lat: '39.933343' },
-            { place: '天安门', lng: '116.404108', lat: '39.915138' },
-            { place: '人民大会堂', lng: '116.400155', lat: '39.911541' },
-            // { place: '中国美术馆', lng: '116.400155', lat: '39.911541' },
+            { place: "Gugong Museum", lng: "116.403677", lat: "39.923716" },
+            { place: "Jingshan Park", lng: "116.403245", lat: "39.93113" },
+            { place: "Kunning Palace", lng: "116.403533", lat: "39.927146" },
+            { place: "Beihai Park", lng: "116.3957", lat: "39.933343" },
+            { place: "Tiananmen Square", lng: "116.404108", lat: "39.915138" },
+            { place: "Great Hall of the People", lng: "116.400155", lat: "39.911541" },
+            { place: "National Art Museum of China", lng: "116.415489", lat: "39.931407" }
         ]
 
         // 信息窗口属性
@@ -55,7 +55,7 @@
 
             // filter
             self.filteredList = ko.computed( function () {
-                var filter = self.search().toString();
+                var filter = self.search().toLowerCase();
                 console.log(filter);
                 if (!filter) {
                     self.location().forEach(function (item) {
@@ -64,7 +64,7 @@
                     return self.location();
                 } else {
                     return ko.utils.arrayFilter(self.location(), function(item) {
-                        var name = item.place;
+                        var name = item.place.toLowerCase();
                         console.log(name);
                         console.log(filter);
                         console.log(name.search(filter));
